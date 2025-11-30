@@ -1,4 +1,4 @@
-# environment.py
+# environment_3d.py
 import pygame
 import numpy as np
 import math
@@ -10,11 +10,11 @@ ROBOT_COLOR = (255, 105, 180)  # neon pink
 SENSOR_COLOR = (255, 50, 50)
 TRAIL_COLOR = (100, 200, 255, 50)  # faint cyan trail
 
-class LineFollowEnv:
+class LineFollowEnv3D:
     def __init__(self, path_file="custom_path.pkl"):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("RL Line Follower - Neon Glow")
+        pygame.display.set_caption("RL Line Follower - 3D Neon")
         self.clock = pygame.time.Clock()
 
         # Robot state
@@ -30,15 +30,8 @@ class LineFollowEnv:
             with open(path_file, "rb") as f:
                 self.path_points = pickle.load(f)
         except FileNotFoundError:
-            raise FileNotFoundError(f"{path_file} not found. Run draw_path.py first!")
-
-        # Draw static path on surface
-        self.path_surface = pygame.Surface((WIDTH, HEIGHT))
-        self.path_surface.fill(BLACK)
-        if len(self.path_points) > 1:
-            # neon glow effect with multiple layers
-            for glow in [6,4,2]:
-                pygame.draw.lines(self.path_surface, ROBOT_COLOR, False, self.path_points, glow)
+            # fallback sinusoidal path
+            self.path_points = [(x, int(HEIGHT//2 + 80 * math.sin(x / 150.0))) for x in range(0, WIDTH, 4)]
 
         self.step_count = 0
         self.max_steps = 1000
@@ -64,8 +57,8 @@ class LineFollowEnv:
         ly = max(0, min(HEIGHT-1, ly))
         rx = max(0, min(WIDTH-1, rx))
         ry = max(0, min(HEIGHT-1, ry))
-        left_val = 1 if self.path_surface.get_at((lx, ly))[0] > 200 else 0
-        right_val = 1 if self.path_surface.get_at((rx, ry))[0] > 200 else 0
+        left_val = 1 if self.screen.get_at((lx, ly))[0] > 200 else 0
+        right_val = 1 if self.screen.get_at((rx, ry))[0] > 200 else 0
         return left_val, right_val
 
     def _closest_path_info(self):
@@ -129,20 +122,33 @@ class LineFollowEnv:
 
         return self._get_observation(), reward, done
 
-    def render(self, show_sensors=True, show_trail=True, info=None):
+    def render(self, show_sensors=True, show_trail=True, info=None, final_path=False):
         self.screen.fill(BLACK)
-        self.screen.blit(self.path_surface, (0,0))
+
+        # draw path
+        if final_path:
+            # smooth neon path with highlights
+            if len(self.path_points) > 1:
+                pygame.draw.aalines(self.screen, ROBOT_COLOR, False, self.path_points)
+                for i in range(0, len(self.path_points), 5):
+                    x, y = self.path_points[i]
+                    pygame.draw.circle(self.screen, (255, 200, 230), (x, y), 3)
+        else:
+            # robot training path (optional simple line)
+            if len(self.path_points) > 1:
+                pygame.draw.lines(self.screen, ROBOT_COLOR, False, self.path_points, 4)
 
         # faint trail
         if show_trail and len(self.trail) > 1:
             for i, (x, y) in enumerate(self.trail):
                 alpha = int(50 * i / len(self.trail))
-                trail_surf = pygame.Surface((10,10), pygame.SRCALPHA)
-                pygame.draw.circle(trail_surf, (100, 200, 255, alpha), (5,5), 5)
+                trail_surf = pygame.Surface((10, 10), pygame.SRCALPHA)
+                pygame.draw.circle(trail_surf, (100, 200, 255, alpha), (5, 5), 5)
                 self.screen.blit(trail_surf, (int(x-5), int(y-5)))
 
-        # robot
+        # robot with 3D effect
         pygame.draw.circle(self.screen, ROBOT_COLOR, (int(self.x), int(self.y)), 10)
+        pygame.draw.circle(self.screen, (255, 180, 220), (int(self.x-3), int(self.y-3)), 6)
 
         # sensors
         if show_sensors:
@@ -155,7 +161,7 @@ class LineFollowEnv:
             font = pygame.font.SysFont("Arial", 18, bold=True)
             y0 = 5
             for key, val in info.items():
-                txt = font.render(f"{key}: {val}", True, (255,255,255))
+                txt = font.render(f"{key}: {val}", True, (255, 255, 255))
                 self.screen.blit(txt, (5, y0))
                 y0 += 20
 
