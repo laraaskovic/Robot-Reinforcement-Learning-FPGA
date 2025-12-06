@@ -1,4 +1,3 @@
-# draw_path.py
 import pygame
 import pickle
 
