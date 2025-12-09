@@ -11,7 +11,6 @@ CANVAS_SIZE = 320
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 900
 
-
 WIN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Neon CNN Letter Visualizer")
 
