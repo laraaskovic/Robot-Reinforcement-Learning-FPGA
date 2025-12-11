@@ -13,7 +13,6 @@ SCREEN_HEIGHT = 900
 
 WIN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Neon CNN Letter Visualizer")
-
 FONT = pygame.font.SysFont("consolas", 20, bold=True)
 
 # Dark theme colors
