@@ -208,6 +208,42 @@ def summarize_policy(env, policy, args):
     return summaries, plots
 
 
+def aggregate_policy_results(results):
+    agg = {}
+    for policy_name, episodes in results.items():
+        if not episodes:
+            continue
+        metric_keys = set().union(*(ep["metrics"].keys() for ep in episodes))
+        metrics_mean = {}
+        for k in metric_keys:
+            vals = [ep["metrics"][k] for ep in episodes if ep["metrics"].get(k) is not None]
+            metrics_mean[k] = float(np.mean(vals)) if vals else None
+        failure_counts = {}
+        for ep in episodes:
+            for f in ep["failures"]:
+                failure_counts[f] = failure_counts.get(f, 0) + 1
+        agg[policy_name] = {"metrics_mean": metrics_mean, "failure_counts": failure_counts}
+    return agg
+
+
+def write_markdown_summary(agg, path):
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("# Robustness Comparison\n\n")
+        for policy, vals in agg.items():
+            f.write(f"## {policy}\n\n")
+            f.write("| Metric | Mean |\n|---|---|\n")
+            for mk, mv in vals["metrics_mean"].items():
+                disp = f"{mv:.4f}" if mv is not None else "n/a"
+                f.write(f"| {mk} | {disp} |\n")
+            if vals["failure_counts"]:
+                f.write("\n**Failure counts:**\n")
+                for fk, fv in vals["failure_counts"].items():
+                    f.write(f"- {fk}: {fv}\n")
+            else:
+                f.write("\nNo failures recorded.\n")
+            f.write("\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Robustness evaluation for line follower")
     parser.add_argument("--episodes", type=int, default=3)
@@ -254,10 +290,15 @@ def main():
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(all_results, f, indent=2)
 
+    agg = aggregate_policy_results(all_results)
+    md_path = RUN_DIR / f"summary_{int(start)}.md"
+    write_markdown_summary(agg, md_path)
+
     print("Robustness evaluation complete")
     print(f"- Episodes per policy: {args.episodes}")
     print(f"- Partial observability: {args.partial_obs}")
     print(f"- Results saved to: {summary_path}")
+    print(f"- Markdown summary: {md_path}")
     if all_plots:
         print(f"- Failure plots: {', '.join(all_plots)}")
     else:

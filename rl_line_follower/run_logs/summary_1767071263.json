@@ -1,0 +1,175 @@
+{
+  "feedforward": [
+    {
+      "metrics": {
+        "tracking_error_px": 59.97918502439347,
+        "oscillation": 0.0,
+        "control_energy": 2.3950770593756006,
+        "heading_var": 0.09388051390538349,
+        "saturation_ratio": 0.4429530201342282,
+        "recovery_time_s": null
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 3.507,
+        "turn_limit": 0.1546,
+        "sensor_noise": 0.0665,
+        "bias_drift": 0.00098
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 64.2046555023641,
+        "oscillation": 0.0,
+        "control_energy": 1.3346579989161695,
+        "heading_var": 0.06709656787158612,
+        "saturation_ratio": 0.3645833333333333,
+        "recovery_time_s": null
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 2.711,
+        "turn_limit": 0.1524,
+        "sensor_noise": 0.0905,
+        "bias_drift": 0.00109
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 53.82645732283577,
+        "oscillation": 0.01680672268907563,
+        "control_energy": 1.1004899268745374,
+        "heading_var": 0.3169552716240922,
+        "saturation_ratio": 0.3,
+        "recovery_time_s": null
+      },
+      "failures": [],
+      "domain": {
+        "speed_limit": 4.177,
+        "turn_limit": 0.1238,
+        "sensor_noise": 0.089,
+        "bias_drift": 0.00082
+      }
+    }
+  ],
+  "gru_rnn": [
+    {
+      "metrics": {
+        "tracking_error_px": 58.626766220414034,
+        "oscillation": 0.0,
+        "control_energy": 0.9707596967589548,
+        "heading_var": 0.20729836670467638,
+        "saturation_ratio": 0.37037037037037035,
+        "recovery_time_s": null
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 4.136,
+        "turn_limit": 0.1221,
+        "sensor_noise": 0.0704,
+        "bias_drift": 0.00123
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 93.7475356961521,
+        "oscillation": 0.0,
+        "control_energy": 0.4409553187143455,
+        "heading_var": 0.06215705619647531,
+        "saturation_ratio": 0.4594594594594595,
+        "recovery_time_s": null
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 2.568,
+        "turn_limit": 0.1295,
+        "sensor_noise": 0.0766,
+        "bias_drift": 0.00074
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 46.503749960184045,
+        "oscillation": 0.016129032258064516,
+        "control_energy": 0.7753685450262893,
+        "heading_var": 0.1222546328266613,
+        "saturation_ratio": 0.296,
+        "recovery_time_s": null
+      },
+      "failures": [],
+      "domain": {
+        "speed_limit": 2.656,
+        "turn_limit": 0.1071,
+        "sensor_noise": 0.0696,
+        "bias_drift": 0.00132
+      }
+    }
+  ],
+  "pid_baseline": [
+    {
+      "metrics": {
+        "tracking_error_px": 14.415380650566545,
+        "oscillation": 0.034653465346534656,
+        "control_energy": 7.72248332660261,
+        "heading_var": 0.11028209553081995,
+        "saturation_ratio": 0.5728395061728395,
+        "recovery_time_s": 0.16666666666666666
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 2.674,
+        "turn_limit": 0.1424,
+        "sensor_noise": 0.0938,
+        "bias_drift": 0.0008
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 13.20984807816814,
+        "oscillation": 0.0182648401826484,
+        "control_energy": 2.1812135825856194,
+        "heading_var": 0.13241542604381032,
+        "saturation_ratio": 0.4818181818181818,
+        "recovery_time_s": null
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 3.946,
+        "turn_limit": 0.1052,
+        "sensor_noise": 0.0903,
+        "bias_drift": 0.00104
+      }
+    },
+    {
+      "metrics": {
+        "tracking_error_px": 14.640957826071148,
+        "oscillation": 0.09230769230769231,
+        "control_energy": 4.230107433207364,
+        "heading_var": 0.1370415340306984,
+        "saturation_ratio": 0.4938650306748466,
+        "recovery_time_s": 0.016666666666666666
+      },
+      "failures": [
+        "saturation"
+      ],
+      "domain": {
+        "speed_limit": 3.618,
+        "turn_limit": 0.1211,
+        "sensor_noise": 0.0995,
+        "bias_drift": 0.00137
+      }
+    }
+  ]
+}
